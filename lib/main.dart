@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Proximyco',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -29,8 +29,68 @@ class MyApp extends StatelessWidget {
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const RootNavigation(),
+    );
+  }
+}
+
+class RootNavigation extends StatefulWidget {
+  const RootNavigation({super.key});
+
+  @override
+  State<RootNavigation> createState() => _RootNavigationState();
+}
+
+class _RootNavigationState extends State<RootNavigation> {
+  int _index = 0;
+
+  // Pages for each tab
+  final List<Widget> _pages = const [
+    MyHomePage(title: 'Home page'),
+    MyHomePage(title: 'Home page'),
+    MyHomePage(title: 'Home page'),
+    MyHomePage(title: 'Home page'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _pages[_index],
+
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _index,
+        onDestinationSelected: (int index) {
+          setState(() => _index = index);
+        },
+        destinations: const [
+          NavigationDestination(
+            key: Key('tab_discover'),
+            icon: Icon(Icons.explore_outlined),
+            selectedIcon: Icon(Icons.explore),
+            label: 'Discover',
+          ),
+          NavigationDestination(
+            key: Key('tab_tasks'),
+            icon: Icon(Icons.checklist_outlined),
+            selectedIcon: Icon(Icons.checklist),
+            label: 'My Tasks',
+          ),
+          NavigationDestination(
+            key: Key('tab_helper'),
+            icon: Icon(Icons.volunteer_activism_outlined),
+            selectedIcon: Icon(Icons.volunteer_activism),
+            label: 'Helper',
+          ),
+          NavigationDestination(
+            key: Key('tab_profile'),
+            icon: Icon(Icons.person_outline),
+            selectedIcon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+      ),
     );
   }
 }
