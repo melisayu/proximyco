@@ -46,12 +46,11 @@ class RootNavigation extends StatefulWidget {
 class _RootNavigationState extends State<RootNavigation> {
   int _index = 0;
 
-  // Pages for each tab
   final List<Widget> _pages = const [
-    MyHomePage(title: 'Home page'),
-    MyHomePage(title: 'Home page'),
-    MyHomePage(title: 'Home page'),
-    MyHomePage(title: 'Home page'),
+    DiscoverPage(title: 'Discover Within 5km'),
+    MyTasksPage(),
+    HelpersPage(),
+    ProfilePage(),
   ];
 
   @override
@@ -78,10 +77,10 @@ class _RootNavigationState extends State<RootNavigation> {
             label: 'My Tasks',
           ),
           NavigationDestination(
-            key: Key('tab_helper'),
+            key: Key('tab_helpers'),
             icon: Icon(Icons.volunteer_activism_outlined),
             selectedIcon: Icon(Icons.volunteer_activism),
-            label: 'Helper',
+            label: 'Helpers',
           ),
           NavigationDestination(
             key: Key('tab_profile'),
@@ -95,25 +94,16 @@ class _RootNavigationState extends State<RootNavigation> {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+class DiscoverPage extends StatefulWidget {
+  const DiscoverPage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<DiscoverPage> createState() => _DiscoverPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _DiscoverPageState extends State<DiscoverPage> {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -178,5 +168,32 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+}
+
+class MyTasksPage extends StatelessWidget {
+  const MyTasksPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: Text("My Tasks"));
+  }
+}
+
+class HelpersPage extends StatelessWidget {
+  const HelpersPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: Text("Helpers"));
+  }
+}
+
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: Text("Profile"));
   }
 }
