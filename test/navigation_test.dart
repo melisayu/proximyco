@@ -8,7 +8,7 @@ void main() {
   ) async {
     await tester.pumpWidget(const MyApp());
 
-    // Verify default page is Discover
+    // Verify default screen is Discover
     expect(find.byKey(Key('tab_discover')), findsOneWidget);
     expect(find.text('Discover Within 5km'), findsOneWidget);
 
