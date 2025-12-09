@@ -1,8 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:proximyco/providers/app_state.dart';
+import 'package:proximyco/repositories/repositories.dart';
+import 'package:proximyco/services/proximyco_service.dart';
 import 'package:proximyco/theme/app_theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final prefs = await SharedPreferences.getInstance();
+  final userRepo = InMemoryUserRepository(prefs);
+  final service = ProximycoService(userRepo: userRepo);
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => AppState(service),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
