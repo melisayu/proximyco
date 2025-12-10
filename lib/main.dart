@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proximyco/providers/app_state.dart';
 import 'package:proximyco/repositories/repositories.dart';
+import 'package:proximyco/screens/profile_screen.dart';
 import 'package:proximyco/services/proximyco_service.dart';
 import 'package:proximyco/theme/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,7 +50,7 @@ class _RootNavigationState extends State<RootNavigation> {
     DiscoverPage(title: 'Discover Within 5km'),
     MyTasksPage(),
     HelpersPage(),
-    ProfilePage(),
+    ProfileScreen(),
   ];
 
   @override
@@ -185,14 +186,5 @@ class HelpersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(child: Text("Helpers"));
-  }
-}
-
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text("Profile"));
   }
 }
