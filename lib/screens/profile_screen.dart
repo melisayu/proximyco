@@ -3,12 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:proximyco/models/models.dart';
 
 import '../providers/app_state.dart';
+import '../theme/theme_extension.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<ProximycoTheme>()!;
     final state = context.watch<AppState>();
     final user =
         state.currentUser ??
@@ -41,7 +43,7 @@ class ProfileScreen extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () => Navigator.pop(context, true),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.brown,
+                        backgroundColor: theme.primaryBrand,
                         foregroundColor: Colors.white,
                       ),
                       child: const Text('Logout'),
@@ -49,6 +51,7 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
               );
+              if (confirmed == true) await state.logout();
             },
           ),
         ],
@@ -56,15 +59,15 @@ class ProfileScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Header Section
+            // Header
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(32),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color.fromRGBO(83, 115, 77, 1),
-                    Color.fromRGBO(92, 125, 90, .9),
+                    theme.primaryBrand,
+                    theme.primaryBrandLight.withOpacity(0.9),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -77,10 +80,10 @@ class ProfileScreen extends StatelessWidget {
                     backgroundColor: Colors.white,
                     child: Text(
                       user.nickname[0].toUpperCase(),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(83, 115, 77, 1),
+                        color: theme.primaryBrand,
                       ),
                     ),
                   ),
@@ -115,10 +118,12 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
+
             // Root Minutes Card
             Padding(
               padding: const EdgeInsets.all(24),
               child: Card(
+                color: theme.cardColor,
                 elevation: 4,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
@@ -132,7 +137,7 @@ class ProfileScreen extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.account_balance_wallet,
-                            color: Color.fromRGBO(83, 115, 77, 1),
+                            color: theme.primaryBrand,
                             size: 32,
                           ),
                           const SizedBox(width: 12),
@@ -142,16 +147,16 @@ class ProfileScreen extends StatelessWidget {
                               Text(
                                 'Root Minutes',
                                 style: TextStyle(
-                                  color: Colors.grey[600],
+                                  color: theme.secondaryTextColor,
                                   fontSize: 14,
                                 ),
                               ),
                               Text(
                                 '${user.rootMinutes}',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 36,
                                   fontWeight: FontWeight.bold,
-                                  color: Color.fromRGBO(83, 115, 77, 1),
+                                  color: theme.primaryBrand,
                                 ),
                               ),
                             ],
@@ -159,17 +164,14 @@ class ProfileScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      const Divider(),
+                      Divider(color: theme.borderColor),
                       const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [],
-                      ),
                     ],
                   ),
                 ),
               ),
             ),
+
             // Info Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -188,6 +190,7 @@ class ProfileScreen extends StatelessWidget {
                     title: 'How it works',
                     description:
                         'You start with 120 Root Minutes. When you receive help, minutes are deducted. When you help others, you earn more minutes!',
+                    theme: theme,
                   ),
                   const SizedBox(height: 12),
                   _InfoCard(
@@ -195,11 +198,12 @@ class ProfileScreen extends StatelessWidget {
                     title: 'Community',
                     description:
                         'Build a network of mutual support within 5km of your location. Help your neighbors and get help when you need it.',
+                    theme: theme,
                   ),
+                  const SizedBox(height: 32),
                 ],
               ),
             ),
-            const SizedBox(height: 32),
           ],
         ),
       ),
@@ -211,11 +215,13 @@ class _InfoCard extends StatelessWidget {
   final IconData icon;
   final String title;
   final String description;
+  final ProximycoTheme theme;
 
   const _InfoCard({
     required this.icon,
     required this.title,
     required this.description,
+    required this.theme,
   });
 
   @override
@@ -223,14 +229,14 @@ class _InfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
+        border: Border.all(color: theme.borderColor),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: Color.fromRGBO(83, 115, 77, 1)),
+          Icon(icon, color: theme.primaryBrand),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -238,9 +244,10 @@ class _InfoCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
+                    color: theme.primaryTextColor,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -248,7 +255,7 @@ class _InfoCard extends StatelessWidget {
                   description,
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey[700],
+                    color: theme.secondaryTextColor,
                     height: 1.4,
                   ),
                 ),
