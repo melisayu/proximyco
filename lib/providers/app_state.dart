@@ -31,6 +31,21 @@ class AppState extends ChangeNotifier {
     }
   }
 
+  Future<void> registerUser(String nickname, String postalCode) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      _currentUser = await _proximycoService.registerUser(nickname, postalCode);
+    } catch (e) {
+      _error = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
   Future<void> logout() async {
     try {
       await _proximycoService.logout();
