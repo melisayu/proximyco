@@ -93,4 +93,21 @@ void main() {
       expect(appState.isLoading, false);
     });
   });
+
+  group('State Consistency Tests', () {
+    test('isLoggedIn reflects user state', () async {
+      expect(appState.isLoggedIn, false);
+
+      await appState.registerUser('TestUser', '1234 AB');
+      expect(appState.isLoggedIn, true);
+
+      await appState.logout();
+      expect(appState.isLoggedIn, false);
+    });
+
+    test('loading state returns to false after operations', () async {
+      await appState.registerUser('TestUser', '1234 AB');
+      expect(appState.isLoading, false);
+    });
+  });
 }

@@ -15,6 +15,7 @@ class AppState extends ChangeNotifier {
   User? get currentUser => _currentUser;
   bool get isLoading => _isLoading;
   String? get error => _error;
+  bool get isLoggedIn => _currentUser != null;
 
   Future<void> initialize() async {
     _isLoading = true;
