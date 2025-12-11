@@ -8,12 +8,7 @@ class ProximycoService {
 
   Future<User?> getCurrentUser() => _userRepo.getCurrentUser();
 
-  Future<User> registerUser(
-    String nickname,
-    String postalCode,
-    double lat,
-    double lon,
-  ) {
+  Future<User> registerUser(String nickname, String postalCode) {
     return _userRepo.createUser(nickname, postalCode);
   }
 
