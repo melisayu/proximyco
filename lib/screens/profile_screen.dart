@@ -21,6 +21,12 @@ class ProfileScreen extends StatelessWidget {
           rootMinutes: 120,
         );
 
+    // if (user == null) {
+    //   return const Scaffold(
+    //     body: Center(child: CircularProgressIndicator()),
+    //   );
+    // }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
