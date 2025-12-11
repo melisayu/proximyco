@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proximyco/providers/app_state.dart';
 import 'package:proximyco/repositories/repositories.dart';
+import 'package:proximyco/screens/onboarding_screen.dart';
 import 'package:proximyco/screens/profile_screen.dart';
 import 'package:proximyco/services/proximyco_service.dart';
 import 'package:proximyco/theme/app_theme.dart';
@@ -25,13 +26,24 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Proximyco',
-      theme: buildAppTheme(),
-      home: const RootNavigation(),
+    return Consumer<AppState>(
+      builder: (context, state, child) {
+        if (state.isLoading) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        return MaterialApp(
+          title: 'Proximyco',
+          theme: buildAppTheme(),
+          home: state.isLoggedIn
+              ? const RootNavigation()
+              : const OnboardingScreen(),
+        );
+      },
     );
   }
 }
