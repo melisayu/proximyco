@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:proximyco/theme/theme_extension.dart';
+
+import '../providers/app_state.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -19,6 +22,31 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     _nicknameCtrl.dispose();
     _postalCodeCtrl.dispose();
     super.dispose();
+  }
+
+  Future<void> _handleSubmit() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+
+    try {
+      if (mounted) {
+        await context.read<AppState>().registerUser(
+          _nicknameCtrl.text.trim(),
+          _postalCodeCtrl.text.trim(),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
   }
 
   @override
@@ -44,7 +72,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                 // Title
                 Text(
-                  "Welcome to\nFavor Exchange",
+                  "Welcome to\nProximyco",
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
@@ -111,7 +139,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                 // Submit button
                 ElevatedButton(
-                  onPressed: null,
+                  onPressed: _isLoading ? null : _handleSubmit,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: theme.primaryBrand,
                     foregroundColor: Colors.white,
