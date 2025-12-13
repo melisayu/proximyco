@@ -30,21 +30,25 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AppState>(
       builder: (context, state, child) {
-        if (state.isLoading) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        }
-
         return MaterialApp(
           title: 'Proximyco',
           theme: buildAppTheme(),
-          home: state.isLoggedIn
-              ? const RootNavigation()
-              : const OnboardingScreen(),
+          home: buildHome(state),
         );
       },
     );
+  }
+
+  Widget buildHome(AppState state) {
+    if (state.isLoading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
+    if (!state.isLoggedIn) {
+      return const OnboardingScreen();
+    }
+
+    return const RootNavigation();
   }
 }
 
