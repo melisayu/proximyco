@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:proximyco/models/models.dart';
 
 import '../providers/app_state.dart';
 import '../theme/theme_extension.dart';
@@ -12,20 +11,11 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<ProximycoTheme>()!;
     final state = context.watch<AppState>();
-    final user =
-        state.currentUser ??
-        User(
-          id: 'temp',
-          nickname: 'Anonymous',
-          postalCode: '',
-          rootMinutes: 120,
-        );
+    final user = state.currentUser;
 
-    // if (user == null) {
-    //   return const Scaffold(
-    //     body: Center(child: CircularProgressIndicator()),
-    //   );
-    // }
+    if (user == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
 
     return Scaffold(
       appBar: AppBar(
